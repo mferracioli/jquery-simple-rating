@@ -1,0 +1,135 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>jQuery Simple Rating</title>
+
+	<script type="text/javascript" charset="utf-8" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	
+	<style type="text/css" media="screen">
+	
+	body {
+		font-family:arial;
+	}
+	
+	.star-rating {
+		height:19px;
+	}
+	
+	.star-rating a {
+		text-indent: -5000px;
+		width: 20px;
+		height: 19px;
+		display: block;
+		overflow: hidden;
+		float: left;
+		margin: 0 5px 0 0;
+		background: url("simple-rating-star-off.gif") no-repeat;
+	}
+	
+	.star-rating1 .star-rating-star1,
+	.star-rating2 .star-rating-star1,
+	.star-rating3 .star-rating-star1,
+	.star-rating4 .star-rating-star1  
+	{
+		background:url("simple-rating-star-on.gif") no-repeat;
+	}
+
+	.star-rating2 .star-rating-star2,
+	.star-rating3 .star-rating-star2,
+	.star-rating4 .star-rating-star2 
+	{
+		background:url("simple-rating-star-on.gif") no-repeat;
+	}
+
+	.star-rating3 .star-rating-star3,
+	.star-rating4 .star-rating-star3 
+	{
+		background:url("simple-rating-star-on.gif") no-repeat;
+	}
+
+	.star-rating4 .star-rating-star4
+	{
+		background:url("simple-rating-star-on.gif") no-repeat;
+	}
+	
+	.star-rating-label
+	{
+		float:left;
+		line-height:19px;
+		padding:0 10px 0 10px;
+		margin:2px 0 0 0;
+	}
+	
+	</style>
+	
+</head>
+
+<body>
+
+<div class="star-rating star-rating3">
+	<a href="#" class="star-rating-star1" alt="Ruim">Ruim</a>
+	<a href="#" class="star-rating-star2" alt="Regular">Regular</a>
+	<a href="#" class="star-rating-star3" alt="Bom">Bom</a>
+	<a href="#" class="star-rating-star4" alt="Ótimo">Ótimo</a>
+	<p class="star-rating-label">Bom</p>
+</div>
+
+<script type="text/javascript" charset="utf-8">
+
+(function ($) {
+    $.fn.simpleRating = function (options) {
+
+        var defaults = {
+            over: function () { },
+            click: function () { }
+        };
+
+        var options = $.extend(defaults, options);
+
+        $(this).each(function (i, wrap) {
+
+            var current = $(wrap).attr("class");
+
+            $("a", wrap).each(function (j, star) {
+                $(star).mouseover(function () {
+                    removeClasses(wrap);
+                    $(wrap).addClass("star-rating" + (j + 1));
+                	$(".star-rating-label", $(wrap)).first().html($(star).html());
+                    options.over(j + 1);
+                });
+                $(star).click(function (event) {
+                    event.preventDefault();
+                    current = $(wrap).attr("class");
+                    options.click(j + 1);
+                });
+            });
+
+            $(wrap).mouseout(function () {
+                removeClasses(wrap);
+                $(wrap).addClass(current);
+            });
+
+        });
+
+        function removeClasses(wrap) {
+            $(wrap).removeClass("star-rating1 star-rating2 star-rating3 star-rating4");
+        }
+
+    };
+})(jQuery);
+
+$(document).ready(function(){
+	$(".star-rating").simpleRating({
+		click: function(i) {
+			alert(i);
+		}
+	});
+});
+
+</script>
+
+</body>
+</html>
